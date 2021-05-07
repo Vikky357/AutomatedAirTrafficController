@@ -1,5 +1,6 @@
 package com.example.Atc;
 
+import java.io.IOException;
 import java.util.*;
 public class ATC {
     Scanner sc = new Scanner(System.in);
@@ -9,12 +10,23 @@ public class ATC {
         Flightlist = new HashMap<>();
         Platformlist = new ArrayList<>();
         System.out.println("Welcome to ATC Controller ADMIN Panel");
-        assign();
+        dynamicassign();
+        //assign();
         Collections.sort(Platformlist);
         mainscreen();
 
     }
+    void dynamicassign() {
+        Flightlist.put("atr", new Flight("atr", 12.00,30.00));
+        Flightlist.put("airbus", new Flight("airbus", 20.00,40.00));
+        Flightlist.put("boeing", new Flight("boeing", 40.00,50.00));
+        Flightlist.put("cargo", new Flight("cargo", 100.00,60.00));
+        Platformlist.add(new Platform("r1",40.00));
+        Platformlist.add(new Platform("r2",60.00));
+        Platformlist.add(new Platform("r3",80.00));
+        Platformlist.add(new Platform("r4",90.00));
 
+    }
     void assign() {
         System.out.println("Please Fill the Flight/Platform Details:");
         System.out.println("1.Enter 1 for Entering Flight Details");
@@ -24,13 +36,18 @@ public class ATC {
         int choice;
         String name_id;
         double weight, time;
-        boolean contine = true;
 
         while(true) {
 
             System.out.println("Enter the choice:");
-            choice = sc.nextInt();
-            sc.nextLine();
+            try {
+                choice = sc.nextInt();
+                sc.nextLine();
+            } catch (InputMismatchException ex) {
+                System.out.println("Input Exception Occured..");
+                sc.next();
+                continue;
+            }
             switch (choice) {
                 case 1:
                     System.out.println("Enter Flight Name, Weight, Time of Flight");
@@ -70,8 +87,12 @@ public class ATC {
     }
 
     void mainscreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+
+        try {
+            Runtime.getRuntime().exec("clear");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         int choice;
         while (true) {
             System.out.println("Hello,Welcome to automated ATC!!!");
@@ -79,23 +100,28 @@ public class ATC {
             System.out.println("1.Takeoff");
             System.out.println("2.Landing");
             System.out.println("3.Emergency Landing");
-            choice = sc.nextInt();
-            sc.nextLine();
+            System.out.println("4.Exit");
+            try {
+                choice = sc.nextInt();
+                sc.nextLine();
+            } catch(InputMismatchException e) {
+                System.out.println("Input Error Occured");
+                sc.next();
+                continue;
+            }
             switch (choice) {
                 case 1:
-                    try {
-                        ArrayList arr = getInput();
-                        System.out.println(arr);
-                    } catch(InputMismatchException ex) {
-                        System.out.println("Mismatch in Input");
-                        sc.next();
-                    } catch(NotAvailable ex) {
-                        System.out.println(ex.getMessage());
-                    }
+                    Flightassinged();
+                    break;
+
+                case 2:
+                    Flightassinged();
+                    break;
+                case 3:
                     break;
                 case 4:
+                    System.out.println("Threads Running: "+ Thread.activeCount());
                     return ;
-
 
             }
         }
@@ -116,14 +142,64 @@ public class ATC {
 
     }
 
-    class NotAvailable extends Exception {
+    double calculatepercent(double weight, Flight obj) {
+        double percentage = (weight/obj.getFWeight()) * 100;
+        double time = obj.getFTime();
+        if(percentage > 75.00) {
+            return time;
+        }
+        else if (percentage < 50.00) {
+            return time - ((20/100.00d)* obj.getFTime());
+        }
+
+        return time - ((10/100.00d)* obj.getFTime());
+
+
+    }
+
+    boolean isTakeoff(double time, String FName ) {
+        for(Platform platforms : Platformlist) {
+            if(platforms.getPTime() >= time && platforms.getisFree()) {
+
+                platforms.setisFree(false);
+                System.out.println("Platform id:"+ platforms.getPid()+ " "+ "is assigned for "+ time+ "seconds to"+ FName);
+                platforms.setInputFlighttime(time);
+                Thread t = new Thread(platforms);
+                t.start();
+                return true;
+            }
+        }
+        System.out.println("Can't assign right now... Runways are Busy");
+        return false;
+    }
+
+    boolean Flightassinged() {
+        try {
+            ArrayList arr = getInput();
+            double actualTime = calculatepercent((double)arr.get(1), Flightlist.get((String)arr.get(0)) ) + 10;
+            if(isTakeoff(actualTime, (String) arr.get(0)) )
+                return true;
+        } catch(InputMismatchException ex) {
+            System.out.println("Mismatch in Input");
+            sc.next();
+        } catch(NotAvailable ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return false;
+
+    }
+
+    static class NotAvailable extends Exception {
 
             NotAvailable(String s) {
                 super(s);
             }
     }
 
-    public static void main(String args[]) {
+
+
+    public static void main(String[] args) {
 
         ATC start = new ATC();
 
