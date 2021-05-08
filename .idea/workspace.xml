@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="6bc9ebdf-bf00-4103-acfa-99407c28dc78" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC$NotAvailable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC$NotAvailable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/Platform.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/Platform.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/example/Atc/ATC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/example/Atc/ATC.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/example/Atc/Platform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/example/Atc/Platform.java" afterDir="false" />
     </list>
@@ -68,6 +71,10 @@
         </subPane>
       </pane>
     </panes>
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1620311028541" />

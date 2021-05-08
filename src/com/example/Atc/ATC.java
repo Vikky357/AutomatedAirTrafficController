@@ -2,10 +2,10 @@ package com.example.Atc;
 
 import java.io.IOException;
 import java.util.*;
-public class ATC {
+public class ATC  {
     Scanner sc = new Scanner(System.in);
-    private HashMap<String, Flight> Flightlist ;
-    private List<Platform> Platformlist;
+     HashMap<String, Flight> Flightlist ;
+     public List<Platform> Platformlist;
     ATC() {
         Flightlist = new HashMap<>();
         Platformlist = new ArrayList<>();
@@ -120,11 +120,35 @@ public class ATC {
                 case 3:
                     break;
                 case 4:
-                    System.out.println("Threads Running: "+ Thread.activeCount());
+                    if(Thread.activeCount() > 2)
+                        System.out.println("Please wait we will close once the threads finished running...");
                     return ;
 
             }
         }
+    }
+
+    void Flightassinged() {
+        try {
+            ArrayList arr = getInput();
+            double actualTime = calculatepercent((double)arr.get(1), Flightlist.get((String)arr.get(0)) ) + 10;
+            if(!isTakeoff(actualTime, (String) arr.get(0)) ) {
+                System.out.println("Can't assign right now...Please wait we will add your request in queue");
+                AssignFlight obj = new AssignFlight(actualTime,(String)arr.get(0));
+                Thread t1 = new Thread(obj);
+                t1.start();
+            }
+
+
+
+        } catch(InputMismatchException ex) {
+            System.out.println("Mismatch in Input");
+            sc.next();
+        } catch(NotAvailable ex) {
+            System.out.println(ex.getMessage());
+        }
+
+
     }
 
     ArrayList getInput() throws NotAvailable {
@@ -145,10 +169,10 @@ public class ATC {
     double calculatepercent(double weight, Flight obj) {
         double percentage = (weight/obj.getFWeight()) * 100;
         double time = obj.getFTime();
-        if(percentage > 75.00) {
+        if(percentage > 75.00d) {
             return time;
         }
-        else if (percentage < 50.00) {
+        else if (percentage < 50.00d) {
             return time - ((20/100.00d)* obj.getFTime());
         }
 
@@ -158,6 +182,7 @@ public class ATC {
     }
 
     boolean isTakeoff(double time, String FName ) {
+
         for(Platform platforms : Platformlist) {
             if(platforms.getPTime() >= time && platforms.getisFree()) {
 
@@ -169,26 +194,10 @@ public class ATC {
                 return true;
             }
         }
-        System.out.println("Can't assign right now... Runways are Busy");
         return false;
     }
 
-    boolean Flightassinged() {
-        try {
-            ArrayList arr = getInput();
-            double actualTime = calculatepercent((double)arr.get(1), Flightlist.get((String)arr.get(0)) ) + 10;
-            if(isTakeoff(actualTime, (String) arr.get(0)) )
-                return true;
-        } catch(InputMismatchException ex) {
-            System.out.println("Mismatch in Input");
-            sc.next();
-        } catch(NotAvailable ex) {
-            System.out.println(ex.getMessage());
-        }
 
-        return false;
-
-    }
 
     static class NotAvailable extends Exception {
 
@@ -197,11 +206,37 @@ public class ATC {
             }
     }
 
+    class AssignFlight  implements Runnable{
+        String name;
+        double time;
+
+        AssignFlight(double time, String name) {
+            this.name = name;
+            this.time = time;
+        }
+
+        public void run() {
+            try {
+                Thread.sleep(3000);
+
+            } catch(Exception e) {
+                System.out.println("Thread Api Exception..");
+            }
+            if(!isTakeoff(time, name) ) {
+                Thread t = new Thread(this);
+                t.start();
+            }
+
+
+        }
+    }
+
+
 
 
     public static void main(String[] args) {
 
-        ATC start = new ATC();
+        new ATC();
 
     }
 }

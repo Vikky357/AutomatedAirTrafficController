@@ -43,12 +43,14 @@ public class Platform implements  Comparable<Platform>, Runnable {
 
     public void run() {
         try {
+
             Thread.sleep(Math.round(inputFlighttime)*1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             this.isFree = true;
-            System.out.println("Runway:"+ this.pid+ " is cleared");
+            System.out.println("Runway:"+ this.pid+ " is cleared ");
+
         }
         return;
     }
