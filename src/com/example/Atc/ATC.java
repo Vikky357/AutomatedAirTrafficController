@@ -5,7 +5,7 @@ import java.util.*;
 public class ATC  {
     Scanner sc = new Scanner(System.in);
      HashMap<String, Flight> Flightlist ;
-     public List<Platform> Platformlist;
+     List<Platform> Platformlist;
     ATC() {
         Flightlist = new HashMap<>();
         Platformlist = new ArrayList<>();
@@ -13,6 +13,9 @@ public class ATC  {
         dynamicassign();
         //assign();
         Collections.sort(Platformlist);
+        for(Platform platforms:Platformlist) {
+            System.out.println(platforms);
+        }
         mainscreen();
 
     }
@@ -29,7 +32,7 @@ public class ATC  {
     }
     void assign() {
         System.out.println("Please Fill the Flight/Platform Details:");
-        System.out.println("1.Enter 1 for Entering Flight Details");
+        System.out.println("1.Enter 1 f     or Entering Flight Details");
         System.out.println("2.Enter 2 for Entering Platform Details");
         System.out.println("3.Enter 3 for Finish");
         System.out.println();
@@ -88,11 +91,6 @@ public class ATC  {
 
     void mainscreen() {
 
-        try {
-            Runtime.getRuntime().exec("clear");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         int choice;
         while (true) {
             System.out.println("Hello,Welcome to automated ATC!!!");
@@ -135,7 +133,7 @@ public class ATC  {
             if(!isTakeoff(actualTime, (String) arr.get(0)) ) {
                 System.out.println("Can't assign right now...Please wait we will add your request in queue");
                 AssignFlight obj = new AssignFlight(actualTime,(String)arr.get(0));
-                Thread t1 = new Thread(obj);
+                Thread t1 = new Thread(obj, (String)arr.get(0));
                 t1.start();
             }
 
@@ -189,7 +187,7 @@ public class ATC  {
                 platforms.setisFree(false);
                 System.out.println("Platform id:"+ platforms.getPid()+ " "+ "is assigned for "+ time+ "seconds to"+ FName);
                 platforms.setInputFlighttime(time);
-                Thread t = new Thread(platforms);
+                Thread t = new Thread(platforms, "Assigned Thread");
                 t.start();
                 return true;
             }
@@ -217,13 +215,13 @@ public class ATC  {
 
         public void run() {
             try {
-                Thread.sleep(3000);
+                Thread.sleep(10000);
 
             } catch(Exception e) {
                 System.out.println("Thread Api Exception..");
             }
             if(!isTakeoff(time, name) ) {
-                Thread t = new Thread(this);
+                Thread t = new Thread(this, "Waiting thread");
                 t.start();
             }
 
