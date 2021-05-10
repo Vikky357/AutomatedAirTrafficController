@@ -108,14 +108,8 @@ public class ATC  {
                 continue;
             }
             switch (choice) {
-                case 1:
-                    Flightassinged();
-                    break;
-
-                case 2:
-                    Flightassinged();
-                    break;
-                case 3:
+                case 1: case 2: case 3:
+                    Flightassinged(choice);
                     break;
                 case 4:
                     if(Thread.activeCount() > 2)
@@ -126,18 +120,15 @@ public class ATC  {
         }
     }
 
-    void Flightassinged() {
+    void Flightassinged(int choice) {
         try {
             ArrayList arr = getInput();
             double actualTime = calculatepercent((double)arr.get(1), Flightlist.get((String)arr.get(0)) ) + 10;
-            if(!isTakeoff(actualTime, (String) arr.get(0)) ) {
-                System.out.println("Can't assign right now...Please wait we will add your request in queue");
-                AssignFlight obj = new AssignFlight(actualTime,(String)arr.get(0));
-                Thread t1 = new Thread(obj, (String)arr.get(0));
-                t1.start();
-            }
-
-
+            if(choice != 3)
+                choice = 0;
+            else
+                choice = 1;
+            TakeoffLanding objref = new TakeoffLanding(actualTime,(String) arr.get(0),(short)choice);
 
         } catch(InputMismatchException ex) {
             System.out.println("Mismatch in Input");
@@ -179,7 +170,7 @@ public class ATC  {
 
     }
 
-    boolean isTakeoff(double time, String FName ) {
+    synchronized boolean isTakeoff(double time, String FName ) {
 
         for(Platform platforms : Platformlist) {
             if(platforms.getPTime() >= time && platforms.getisFree()) {
@@ -204,30 +195,31 @@ public class ATC  {
             }
     }
 
-    class AssignFlight  implements Runnable{
-        String name;
-        double time;
 
-        AssignFlight(double time, String name) {
-            this.name = name;
-            this.time = time;
-        }
-
-        public void run() {
-            try {
-                Thread.sleep(10000);
-
-            } catch(Exception e) {
-                System.out.println("Thread Api Exception..");
+    class TakeoffLanding {
+            String name;
+            double time;
+            short option;
+            TakeoffLanding(double time, String name,Short option) {
+                this.name = name;
+                this.time = time;
+                this.option = option;
+                Timer t = new Timer();
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        while(!isTakeoff(time, name)) {
+                            continue;
+                        }
+                        t.cancel();
+                    }
+                };
+                if(option != 1)
+                    t.scheduleAtFixedRate(task,0,3000);
+                else
+                    t.scheduleAtFixedRate(task,0,1000);
             }
-            if(!isTakeoff(time, name) ) {
-                Thread t = new Thread(this, "Waiting thread");
-                t.start();
-            }
-
-
         }
-    }
 
 
 
