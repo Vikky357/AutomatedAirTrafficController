@@ -13,9 +13,6 @@ public class ATC  {
         dynamicassign();
         //assign();
         Collections.sort(Platformlist);
-        for(Platform platforms:Platformlist) {
-            System.out.println(platforms);
-        }
         mainscreen();
 
     }

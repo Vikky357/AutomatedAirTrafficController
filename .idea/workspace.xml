@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6bc9ebdf-bf00-4103-acfa-99407c28dc78" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC$NotAvailable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC$NotAvailable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/example/Atc/ATC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/example/Atc/ATC.java" afterDir="false" />
-    </list>
+    <list default="true" id="6bc9ebdf-bf00-4103-acfa-99407c28dc78" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
