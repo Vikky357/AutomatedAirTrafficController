@@ -109,13 +109,14 @@ public class ATC  {
                 case 1: case 2:
                     input = Flightassigned();
                     if(input != null) {
-                        TakeoffLanding objref = new TakeoffLanding((double) input.get(1), (String) input.get(0));
+                        Assigning obj = new Assigning((double) input.get(1), (String) input.get(0));
+                        obj.TakeoffLanding();
                     }
                     break;
                 case 3:
                     input = Flightassigned();
                     if(input != null) {
-                        EmergencyLanding obj = new EmergencyLanding((double) input.get(1), (String) input.get(0));
+                        Assigning obj = new Assigning((double) input.get(1), (String) input.get(0));
                         Thread t = new Thread(obj);
                         t.setPriority(10);
                         t.start();
@@ -132,19 +133,20 @@ public class ATC  {
 
     ArrayList Flightassigned() {
 
-         ArrayList arr = null;
          try {
+             ArrayList arr = null;
              arr = getInput();
              double actualTime = calculatepercent((double)arr.get(1), Flightlist.get((String)arr.get(0)) ) + 10;
              arr.set(1,actualTime);
+             return arr;
          } catch(InputMismatchException ex) {
              System.out.println("Mismatch in Input");
              sc.next();
+             return null;
          } catch(NotAvailable ex) {
              System.out.println(ex.getMessage());
+             return null;
          }
-
-         return arr;
 
     }
 
@@ -168,19 +170,63 @@ public class ATC  {
     }
 
     double calculatepercent(double weight, Flight obj) {
-        double percentage = (weight/obj.getFWeight()) * 100;
+        double percentage = (weight/obj.getFWeight()) * 100.00d;
         double time = obj.getFTime();
         if(percentage > 75.00d) {
             return time;
         }
         else if (percentage < 50.00d) {
-            return time - ((20/100.00d)* obj.getFTime());
+            return time - ((20/100.00d)* time);
         }
 
-        return time - ((10/100.00d)* obj.getFTime());
+        return time - ((10/100.00d)* time);
 
 
     }
+
+
+
+
+
+    static class NotAvailable extends Exception {
+
+            NotAvailable(String s) {
+                super(s);
+            }
+    }
+
+
+
+        class Assigning implements Runnable {
+
+            double time;
+            String name;
+            Assigning(double time, String name) {
+                this.time = time;
+                this.name = name;
+            }
+
+            void TakeoffLanding() {
+                Timer t = new Timer();
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        if(isTakeoff(time, name))
+                            t.cancel();
+
+                    }
+                };
+                t.scheduleAtFixedRate(task,0,3000);
+
+            }
+
+            @Override
+            public void run() {
+                while(!isTakeoff(time, name)) {
+                    continue;
+                }
+            }
+        }
 
     synchronized boolean isTakeoff(double time, String FName ) {
 
@@ -197,51 +243,6 @@ public class ATC  {
         }
         return false;
     }
-
-
-
-    static class NotAvailable extends Exception {
-
-            NotAvailable(String s) {
-                super(s);
-            }
-    }
-
-
-    class TakeoffLanding {
-            String name;
-            double time;
-            TakeoffLanding(double time, String name) {
-                this.name = name;
-                this.time = time;
-                Timer t = new Timer();
-                TimerTask task = new TimerTask() {
-                    @Override
-                    public void run() {
-                        if(isTakeoff(time, name))
-                            t.cancel();
-
-                    }
-                };
-                t.scheduleAtFixedRate(task,0,3000);
-            }
-        }
-
-        class EmergencyLanding implements Runnable {
-            double time;
-            String name;
-            EmergencyLanding(double time, String name) {
-                this.time = time;
-                this.name = name;
-            }
-
-            @Override
-            public void run() {
-                while(!isTakeoff(time, name)) {
-                    continue;
-                }
-            }
-        }
 
 
 
