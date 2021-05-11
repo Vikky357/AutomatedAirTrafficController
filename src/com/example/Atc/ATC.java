@@ -158,6 +158,8 @@ public class ATC  {
         if(!Flightlist.containsKey(name)) {
             throw new NotAvailable("Flight is not availble in data");
         }
+        if(weight > Flightlist.get(name).getFWeight())
+            throw  new NotAvailable("Weight is more than the alloted weight..");
         ArrayList temp = new ArrayList();
         temp.add(name);
         temp.add(weight);
