@@ -6,7 +6,7 @@ public class ATC  {
     Scanner sc = new Scanner(System.in);
      HashMap<String, Flight> Flightlist ;
      List<Platform> Platformlist;
-    ATC() {
+     ATC() {
         Flightlist = new HashMap<>();
         Platformlist = new ArrayList<>();
         System.out.println("Welcome to ATC Controller ADMIN Panel");
@@ -104,9 +104,22 @@ public class ATC  {
                 sc.next();
                 continue;
             }
+            ArrayList input = null;
             switch (choice) {
-                case 1: case 2: case 3:
-                    Flightassinged(choice);
+                case 1: case 2:
+                    input = Flightassigned();
+                    if(input != null) {
+                        TakeoffLanding objref = new TakeoffLanding((double) input.get(1), (String) input.get(0));
+                    }
+                    break;
+                case 3:
+                    input = Flightassigned();
+                    if(input != null) {
+                        EmergencyLanding obj = new EmergencyLanding((double) input.get(1), (String) input.get(0));
+                        Thread t = new Thread(obj);
+                        t.setPriority(10);
+                        t.start();
+                    }
                     break;
                 case 4:
                     if(Thread.activeCount() > 2)
@@ -117,25 +130,25 @@ public class ATC  {
         }
     }
 
-    void Flightassinged(int choice) {
-        try {
-            ArrayList arr = getInput();
-            double actualTime = calculatepercent((double)arr.get(1), Flightlist.get((String)arr.get(0)) ) + 10;
-            if(choice != 3)
-                choice = 0;
-            else
-                choice = 1;
-            TakeoffLanding objref = new TakeoffLanding(actualTime,(String) arr.get(0),(short)choice);
+    ArrayList Flightassigned() {
 
-        } catch(InputMismatchException ex) {
-            System.out.println("Mismatch in Input");
-            sc.next();
-        } catch(NotAvailable ex) {
-            System.out.println(ex.getMessage());
-        }
+         ArrayList arr = null;
+         try {
+             arr = getInput();
+             double actualTime = calculatepercent((double)arr.get(1), Flightlist.get((String)arr.get(0)) ) + 10;
+             arr.set(1,actualTime);
+         } catch(InputMismatchException ex) {
+             System.out.println("Mismatch in Input");
+             sc.next();
+         } catch(NotAvailable ex) {
+             System.out.println(ex.getMessage());
+         }
 
+         return arr;
 
     }
+
+
 
     ArrayList getInput() throws NotAvailable {
 
@@ -196,27 +209,39 @@ public class ATC  {
     class TakeoffLanding {
             String name;
             double time;
-            short option;
-            TakeoffLanding(double time, String name,Short option) {
+            TakeoffLanding(double time, String name) {
                 this.name = name;
                 this.time = time;
-                this.option = option;
                 Timer t = new Timer();
                 TimerTask task = new TimerTask() {
                     @Override
                     public void run() {
-                        while(!isTakeoff(time, name)) {
-                            continue;
-                        }
-                        t.cancel();
+                        if(isTakeoff(time, name))
+                            t.cancel();
+
                     }
                 };
-                if(option != 1)
-                    t.scheduleAtFixedRate(task,0,3000);
-                else
-                    t.scheduleAtFixedRate(task,0,1000);
+                t.scheduleAtFixedRate(task,0,3000);
             }
         }
+
+        class EmergencyLanding implements Runnable {
+            double time;
+            String name;
+            EmergencyLanding(double time, String name) {
+                this.time = time;
+                this.name = name;
+            }
+
+            @Override
+            public void run() {
+                while(!isTakeoff(time, name)) {
+                    continue;
+                }
+            }
+        }
+
+
 
 
 
