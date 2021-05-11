@@ -3,12 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="6bc9ebdf-bf00-4103-acfa-99407c28dc78" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC$EmergencyLanding.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC$EmergencyLanding.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC$NotAvailable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC$NotAvailable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC$TakeoffLanding$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC$TakeoffLanding$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC$TakeoffLanding.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC$TakeoffLanding.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AirTrafficController/com/example/Atc/ATC.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/example/Atc/ATC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/example/Atc/ATC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/example/Atc/Platform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/example/Atc/Platform.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -15,7 +15,7 @@ public class Platform implements  Comparable<Platform>, Runnable {
 
 
     public int compareTo(Platform obj) {
-        return new Double(time) .compareTo(new Double(obj.getPTime()));
+        return Double.compare(time, obj.getPTime());
     }
     public double getPTime() {
         return time;
@@ -52,7 +52,6 @@ public class Platform implements  Comparable<Platform>, Runnable {
             System.out.println("Runway:"+ this.pid+ " is cleared ");
 
         }
-        return;
     }
 
 }

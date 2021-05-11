@@ -184,10 +184,6 @@ public class ATC  {
 
     }
 
-
-
-
-
     static class NotAvailable extends Exception {
 
             NotAvailable(String s) {
@@ -195,9 +191,7 @@ public class ATC  {
             }
     }
 
-
-
-        class Assigning implements Runnable {
+    class Assigning implements Runnable {
 
             double time;
             String name;
@@ -226,7 +220,7 @@ public class ATC  {
                     continue;
                 }
             }
-        }
+     }
 
     synchronized boolean isTakeoff(double time, String FName ) {
 
